@@ -12,8 +12,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.FloatControl;
 
 public class AudioManager {
-	private AudioInputStream[] sound = new AudioInputStream[5];
-	
 	public final int Die = 0;
 	public final int Hit = 1;
 	public final int Point = 2;
@@ -24,6 +22,7 @@ public class AudioManager {
 	Clip[] clip = new Clip[5];
 	
 	public AudioManager(ResourceManager rm) {
+		AudioInputStream[] sound = new AudioInputStream[5];
 		sound[0] = rm.getAudio("sfx_die");
 		sound[1] = rm.getAudio("sfx_hit");
 		sound[2] = rm.getAudio("sfx_point");
@@ -68,7 +67,6 @@ public class AudioManager {
 	public void volume(float v) {
 		if (v < 0f || v > 1f) {
 			System.out.println("Volume out of range!");
-			return;
 		} else {
 			for (int i = 0; i < 5; i++) {
 				FloatControl gainControl = (FloatControl) clip[i].getControl(FloatControl.Type.MASTER_GAIN);

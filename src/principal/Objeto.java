@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public abstract class Objeto extends Rectangle {
-	private static final long serialVersionUID = 1L;
 
 	public Objeto() {
 		super();

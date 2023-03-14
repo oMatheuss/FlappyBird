@@ -6,15 +6,13 @@ import java.awt.Image;
 import java.awt.image.ImageObserver;
 
 public class Pipe extends Objeto {
+	private final ImageObserver o;
+	private final ResourceManager rm;
 	
-	private static final long serialVersionUID = 5L;
-	private ImageObserver o;
-	private ResourceManager rm;
+	private final Image[] pipeImg = new Image[4];
+	private final int direction;
 	
-	private Image[] pipeImg = new Image[4];
-	private int direction;
-	
-	private int posImg[] = new int[2];
+	private final int[] posImg = new int[2];
 	
 	public Pipe(int w, int h, int direction, ImageObserver o, ResourceManager rm) {
 		super(w, h);
@@ -52,10 +50,5 @@ public class Pipe extends Objeto {
 			if (height > width)
 				g2d.drawImage(pipeImg[2], x, posImg[1], o);
 		}
-	}
-	
-	public void attPosSprites() {
-		posImg[0] = y+height-width;
-		posImg[1] = y+width;
 	}
 }

@@ -20,18 +20,16 @@ import principal.Game.Dificuldade;
 import principal.WindowController.Entrada;
 
 public class MenuDificuldades extends Canvas {
-	private static final long serialVersionUID = 1L;
-	
 	public final Dimension tam = new Dimension(320, 100);
 	
-	private WindowController gc;
+	private final WindowController gc;
 	
 	public BufferedImage bufImg;
 	private Graphics2D bufGraph;
 	private boolean firstTime;
 	
-	private Font font;
-	private Color cor = Color.decode("#77ACA2");
+	private final Font font;
+	private final Color cor = Color.decode("#77ACA2");
 	
 	Botao facil, medio, dificil, dificuldades;
 
@@ -118,7 +116,7 @@ public class MenuDificuldades extends Canvas {
 	}
 	
 	public void paint(Graphics g) {
-		if (firstTime == true) {
+		if (firstTime) {
 			firstTime = false;
 			drawFirstTime();
 		}

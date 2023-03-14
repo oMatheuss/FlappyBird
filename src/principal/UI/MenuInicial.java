@@ -19,20 +19,18 @@ import principal.ResourceManager;
 import principal.WindowController.Entrada;
 
 public class MenuInicial extends JPanel {
-	private static final long serialVersionUID = 1L;
-	
-	private WindowController gc;
+	private final WindowController gc;
 	
 	private BufferedImage bufImg;
 	private Graphics2D bufGph;
 	private boolean firstTime;
 	
-	private Background background;
-	private Font font;
-	private Font font2;
-	private Color cor = Color.decode("#090C08");
-	private Color cor2 = Color.decode("#4B5842");
-	private int[][] posOpcoes = new int[4][3];
+	private final Background background;
+	private final Font font;
+	private final Font font2;
+	private final Color cor = Color.decode("#090C08");
+	private final Color cor2 = Color.decode("#4B5842");
+	private final int[][] posOpcoes = new int[4][3];
 	private int highlightOption = 0;
 	
 	public MenuInicial(WindowController gc, ResourceManager rm) {
@@ -109,7 +107,7 @@ public class MenuInicial extends JPanel {
 	}
 
 	public void paint(Graphics g) {
-		if (firstTime == true) {
+		if (firstTime) {
 			firstTime = false;
 			drawFirstTime();
 		}
@@ -123,31 +121,31 @@ public class MenuInicial extends JPanel {
 		bufGph.drawString("Flappy Bird", posOpcoes[0][2], 100);
 
 		bufGph.setFont(font2);
-		
+
 		switch (highlightOption) {
-			case 1:
+			case 1 -> {
 				bufGph.drawString("Sobre", posOpcoes[3][2], 350);
 				bufGph.drawString("Sair", posOpcoes[2][2], 400);
 				bufGph.setColor(cor2);
 				bufGph.drawString("Novo Jogo", posOpcoes[1][2], 300);
-				break;
-			case 2:
+			}
+			case 2 -> {
 				bufGph.drawString("Novo Jogo", posOpcoes[1][2], 300);
 				bufGph.drawString("Sair", posOpcoes[2][2], 400);
 				bufGph.setColor(cor2);
 				bufGph.drawString("Sobre", posOpcoes[3][2], 350);
-				break;
-			case 3:
+			}
+			case 3 -> {
 				bufGph.drawString("Novo Jogo", posOpcoes[1][2], 300);
 				bufGph.drawString("Sobre", posOpcoes[3][2], 350);
 				bufGph.setColor(cor2);
 				bufGph.drawString("Sair", posOpcoes[2][2], 400);
-				break;
-			default:
+			}
+			default -> {
 				bufGph.drawString("Novo Jogo", posOpcoes[1][2], 300);
 				bufGph.drawString("Sobre", posOpcoes[3][2], 350);
 				bufGph.drawString("Sair", posOpcoes[2][2], 400);
-				break;
+			}
 		}
 	}
 	

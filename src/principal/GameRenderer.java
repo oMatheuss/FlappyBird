@@ -8,14 +8,11 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 public class GameRenderer extends Canvas {
-
-	private static final long serialVersionUID = 1L;
-	
 	private BufferedImage bufferedImg;
 	private Graphics2D buf;
 	private boolean firstTime;
 	
-	private Objeto[] obj;
+	private final Objeto[] obj;
 
 	public GameRenderer(Objeto[] obj) {
 		this.obj = obj;
@@ -29,12 +26,12 @@ public class GameRenderer extends Canvas {
 	public void paintScreen() {
 		Graphics2D g2d = (Graphics2D) getGraphics();
 		if (g2d != null) {
-			if (firstTime == true) {
+			if (firstTime) {
 				firstTime = false;
 				drawFirstTime();
 			}
-			for (int i = 0; i < obj.length; i++){
-				obj[i].paint(buf);
+			for (Objeto objeto : obj) {
+				objeto.paint(buf);
 			}
 			g2d.drawImage(bufferedImg, 0, 0, this);
 			Toolkit.getDefaultToolkit().sync();

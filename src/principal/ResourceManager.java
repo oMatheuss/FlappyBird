@@ -1,27 +1,21 @@
 package principal;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.net.URL;
+import java.util.HashMap;
 
 public class ResourceManager {
-	private HashMap<String, Object> resources;
-	private InputStream is;
-	
+	private final HashMap<String, Object> resources;
 	public final String fontePrincipal = "chlorinr";
 	public final String fonteSecundaria = "geomarice";
 
 	public ResourceManager() {
-		resources = new HashMap<String, Object>();
+		resources = new HashMap<>();
 	}
 	
 	public void loadResources() {
@@ -48,50 +42,33 @@ public class ResourceManager {
 	}
 	
 	public void setSprite(String fileName, String name){
-		is = getClass().getClassLoader().getResourceAsStream("resources/sprites/"+fileName);
-		if (is != null) {
-			try {
-				resources.put(name, ImageIO.read(is));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("recurso nao encontrado (Image)");
+		URL resource = ClassLoader.getSystemResource("resources/sprites/" + fileName);
+		try(BufferedInputStream is = (BufferedInputStream) resource.openStream()) {
+			resources.put(name, ImageIO.read(is));
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
 	public void setTrueTypeFont(String fileName, String name) {
-		BufferedInputStream au = new BufferedInputStream(
-				getClass().getClassLoader().getResourceAsStream("resources/fonts/"+fileName));
-		if (is != null) {
-			try {
-				resources.put(name, Font.createFont(Font.TRUETYPE_FONT, au));
-			} catch (FontFormatException | IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("recurso nao encontrado (Font)");
+		URL resource = ClassLoader.getSystemResource("resources/fonts/" + fileName);
+		try(BufferedInputStream is = (BufferedInputStream) resource.openStream()) {
+			resources.put(name, Font.createFont(Font.TRUETYPE_FONT, is));
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 	
 	public void setSound(String fileName, String name) {
-		is = getClass().getClassLoader().getResourceAsStream("resources/sfx/"+fileName);
-		BufferedInputStream au = new BufferedInputStream(is);
-		if (is != null) {
-			try {
-				resources.put(name, AudioSystem.getAudioInputStream(au));
-			} catch (UnsupportedAudioFileException | IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("recurso nao encontrado (Sound)");
+		URL resource = ClassLoader.getSystemResource("resources/sfx/" + fileName);
+		try {
+			BufferedInputStream is = (BufferedInputStream) resource.openStream();
+			resources.put(name, AudioSystem.getAudioInputStream(is));
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
-	
-	public Object getResource(String name) {
-		return resources.get(name);
-	}
-	
+
 	public BufferedImage getSprite(String name) {
 		return (BufferedImage) resources.get(name);
 	}

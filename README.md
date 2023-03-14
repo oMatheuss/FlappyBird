@@ -1,10 +1,5 @@
 # FlappyBird
 
-<h3>Projeto Final de Programação Orientada a Objetos</h3>
-
-Aluno: Matheus Silva Moura - 5152442<br />
-Professora: Luciene Chagas de Oliveira
-
 <p>Projeto desenvolvido usando as tecnologias:</p>
 <ol>
   <li><b>Java</b> (desenvolvimento geral);</li>

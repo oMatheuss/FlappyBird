@@ -7,8 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Scrollbar;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -19,21 +17,17 @@ import principal.WindowController;
 import principal.ResourceManager;
 
 public class MenuVolume extends JPanel {
-	private static final long serialVersionUID = 1L;
-
 	public final Dimension tam = new Dimension(120, 60);
 	
-	private WindowController gc;
+	private final WindowController gc;
 	
 	public BufferedImage bufImg;
 	private Graphics2D bufGraph;
 	private boolean firstTime;
 	
-	private Font font;
-	private Color cor = Color.decode("#77ACA2");
-	private Color cor2 = Color.decode("#031926");
-	
-	private JScrollBar vol;
+	private final Font font;
+	private final Color cor = Color.decode("#77ACA2");
+	private final JScrollBar vol;
 	private Botao volume;
 	
 	public MenuVolume(WindowController gc, ResourceManager rm) {
@@ -47,18 +41,14 @@ public class MenuVolume extends JPanel {
     	vol.setBounds(10, 35, 100, 20);
 		vol.setValues(0, 1, 0, 100);
 		vol.setOrientation(Scrollbar.HORIZONTAL);
+		Color cor2 = Color.decode("#031926");
 		vol.setBackground(cor2);
 		vol.setValue(20);
 	}
 	
 	public void initComponents() {
-		gc.setarVolume(20);
-		vol.addAdjustmentListener(new AdjustmentListener() {
-			@Override
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				gc.setarVolume(e.getValue());
-			}
-		});
+		gc.setVolume(20);
+		vol.addAdjustmentListener(e -> gc.setVolume(e.getValue()));
 		this.add(vol);
 	}
 	
@@ -67,7 +57,7 @@ public class MenuVolume extends JPanel {
 	}
 	
 	public void paint(Graphics g) {
-		if (firstTime == true) {
+		if (firstTime) {
 			firstTime = false;
 			drawFirstTime();
 		}

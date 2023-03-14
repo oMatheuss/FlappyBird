@@ -6,14 +6,11 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
 public class Background extends Objeto {
-	private static final long serialVersionUID = 1L;
-	private ImageObserver o;
-	private ResourceManager rm;
+	private final ImageObserver o;
+	private final ResourceManager rm;
 	
 	public int x, y, w, h;
 	double scale;
-	
-	private BufferedImage backgroundBImg;
 	private Image backgroundImg;
 	
 	public Background(int x, int y, double scale, ImageObserver observer, ResourceManager rm) {
@@ -26,7 +23,7 @@ public class Background extends Objeto {
 	}
 	
 	public void init() {
-		backgroundBImg = rm.getSprite("mainBackground");
+		BufferedImage backgroundBImg = rm.getSprite("mainBackground");
 		
 		w = (int) (backgroundBImg.getWidth()*scale);
 		h = (int) (backgroundBImg.getHeight()*scale);

@@ -20,17 +20,14 @@ import principal.ResourceManager;
 import principal.WindowController.Entrada;
 
 public class MenuSobre extends Canvas {
-
-	private static final long serialVersionUID = 1L;
-
-	private WindowController gc;
+	private final WindowController gc;
 
     private BufferedImage bufImg;
 	private Graphics2D bufGph;
 	private boolean firstTime;
 
-    private Background background;
-    private Font font;
+    private final Background background;
+    private final Font font;
     
     private Botao voltar;
 

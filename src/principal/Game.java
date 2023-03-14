@@ -36,23 +36,24 @@ public class Game implements Runnable {
 		pos[8][1] = -200;
 	}
 	
-	private WindowController gc;
-	private ResourceManager rm;
-	private GameRenderer gui;
-	
-	private int velocity = 7;
-	private double gravity = 10.0/60.0;
-	private double forcaPulo = 7;
+	private final WindowController gc;
+	private final ResourceManager rm;
+	private final GameRenderer gui;
+
+	private int velocity;
+	private double gravity;
+	private double forcaPulo;
+
 	private double forcaY;
 	private int cont, frameAtual;
 	private boolean pulou;
 	private long cooldownPulo;
 	private boolean podePular;
 	
-	private AudioManager am;
+	private final AudioManager am;
 	private Bird player;
-	private Pipe[] obstacle = new Pipe[6];
-	private Background[] background = new Background[2];
+	private final Pipe[] obstacle = new Pipe[6];
+	private final Background[] background = new Background[2];
 	private Pontos pontos;
 	
 	private int x;
@@ -60,11 +61,7 @@ public class Game implements Runnable {
 	public boolean jogando;
 	private boolean firstTime;
 	
-	public boolean passou[] = new boolean[3]; {
-		passou[0] = false;
-		passou[1] = false;
-		passou[2] = false;
-	}
+	public boolean[] passou = { false, false, false };
 	
 	public Game(WindowController gc, ResourceManager rm) {
 		this.gc = gc;
@@ -77,7 +74,8 @@ public class Game implements Runnable {
 	}
 	
 	public void run() {
-		long before, elapsed, waitTime;
+		long before, elapsed, waitTime = 34_000_000;
+
 		while(jogando) {
 			before = System.nanoTime();
 			
@@ -88,24 +86,19 @@ public class Game implements Runnable {
 				update(2);
 				gui.paintScreen();
 			}
-				
+
 			elapsed = System.nanoTime() - before;
 			
-			waitTime = 34000000 - elapsed;
-			
 			while (elapsed < waitTime) {
-				if (elapsed > 1000000) {
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					elapsed = System.nanoTime() - before;
-				} else {
-					break;
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
+				elapsed = System.nanoTime() - before;
+				if (elapsed >= waitTime)
+					break;
 			}
-			//System.out.println(elapsed);
 		}
 	}
 	
@@ -167,7 +160,7 @@ public class Game implements Runnable {
 	}
 	
 	public void setarVolume(int x) {
-		am.volume((float) (x/100.0f));
+		am.volume(x/100.0f);
 	}
 	
 	public enum Dificuldade {
@@ -177,22 +170,22 @@ public class Game implements Runnable {
 	}
 
 	public void novoJogo(Dificuldade d) {
-		switch(d) {
-		case FACIL:
-			velocity = 480/30;
-			gravity = 30.0/30.0;
-			forcaPulo = 400/30.0;
-			break;
-		case MEDIO:
-			velocity = 750/30;
-			gravity = 50.0/30.0;
-			forcaPulo = 550/30;
-			break;
-		case DIFICIL:
-			velocity = 1050/30;
-			gravity = 100.0/30.0;
-			forcaPulo = 750/30.0;
-			break;
+		switch (d) {
+			case FACIL -> {
+				velocity = 480 / 30;
+				gravity = 1.0;
+				forcaPulo = 400 / 30.0;
+			}
+			case MEDIO -> {
+				velocity = 750 / 30;
+				gravity = 50.0 / 30.0;
+				forcaPulo = 550 / 30.0;
+			}
+			case DIFICIL -> {
+				velocity = 1050 / 30;
+				gravity = 100.0 / 30.0;
+				forcaPulo = 750 / 30.0;
+			}
 		}
 		
 		firstTime = true;
@@ -219,31 +212,28 @@ public class Game implements Runnable {
 	
 	public void update(int i) {
 		switch (i) {
-		case 1:
-			if (colidiu()) {
-				jogando = false;
-				am.playSound(am.Hit);
-				gc.seletor(Entrada.MENU_MORTE);
-				return;
-			} else if((player.y > 600) || (player.y < -20)) {
-				jogando = false;
-				am.playSound(am.Die);
-				gc.seletor(Entrada.MENU_MORTE);
-				return;
+			case 1 -> {
+				if (colidiu()) {
+					jogando = false;
+					am.playSound(am.Hit);
+					gc.seletor(Entrada.MENU_MORTE);
+					return;
+				} else if ((player.y > 600) || (player.y < -20)) {
+					jogando = false;
+					am.playSound(am.Die);
+					gc.seletor(Entrada.MENU_MORTE);
+					return;
+				}
+				player.setFrame(frameAtual);
+				updateY();
+				movendoBackground();
+				movendoObstaculos();
 			}
-			player.setFrame(frameAtual);
-			updateY();
-			movendoBackground();
-			movendoObstaculos();
-			break;
-		case 2:
-			player.setFrame(frameAtual);
-			movendoBackground();
-			if (cont == 0)
-				animacaoP(true);
-			else
-				animacaoP(false);
-			break;
+			case 2 -> {
+				player.setFrame(frameAtual);
+				movendoBackground();
+				animacaoP(cont == 0);
+			}
 		}
 	}
 	 
@@ -256,7 +246,7 @@ public class Game implements Runnable {
 			forcaY = 0;
 			forcaY -= forcaPulo;
 			return;
-		} else if (podePular == false) {
+		} else if (!podePular) {
 			if (System.currentTimeMillis() - cooldownPulo > 200)
 				podePular = true;
 		}
@@ -266,30 +256,28 @@ public class Game implements Runnable {
 	}
 	
 	public void animacaoP(boolean b) {
-		if(b == true) {
+		if(b) {
 			cont = 16;
 			frameAtual = 1;
 			return;
 		}
 		if (cont == 0)
 			return;
-		
+
 		switch (cont) {
-		case 12:
-			frameAtual = 2;
-			cont--;
-			break;
-		case 8:
-			frameAtual = 3;
-			cont--;
-			break;
-		case 4:
-			frameAtual = 0;
-			cont--;
-			break;
-		default:
-			cont--;
-			break;
+			case 12 -> {
+				frameAtual = 2;
+				cont--;
+			}
+			case 8 -> {
+				frameAtual = 3;
+				cont--;
+			}
+			case 4 -> {
+				frameAtual = 0;
+				cont--;
+			}
+			default -> cont--;
 		}
 	}
 	public void movendoBackground() {
@@ -302,6 +290,7 @@ public class Game implements Runnable {
 		if (background[1].x <= -background[1].w)
 			background[1].x = background[0].x+background[0].w;
 	}
+
 	public void movendoObstaculos() {
 		for (int i = 0; i < 5; i += 2) {
 			obstacle[i].x -= velocity/2;
@@ -316,7 +305,7 @@ public class Game implements Runnable {
 				passou[i/2] = false;
 			}
 			
-			if (player.x > obstacle[i].x+20 && passou[i/2] == false) {
+			if (player.x > obstacle[i].x+20 && !passou[i / 2]) {
 				passou[i/2] = true;
 				pontos.addPonto();
 				if (pontos.getPontos() % 10 == 0)

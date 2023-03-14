@@ -5,19 +5,15 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 public class Pontos extends Objeto {
-	private static final long serialVersionUID = 1L;
-
-	private Font font;
-	private Color cor = Color.decode("#090C08");
+	private final Font font;
+	private final Color cor = Color.decode("#090C08");
 	
 	private int pontos;
-	private int multiplicador;
-	
+
 	public Pontos(int x, int y, ResourceManager rm) {
 		super(x, y, 0, 0);
 		font = rm.getFont(rm.fonteSecundaria).deriveFont(Font.PLAIN, 48);
 		pontos = 0;
-		multiplicador = 1;
 	}
 	
 	@Override
@@ -29,13 +25,10 @@ public class Pontos extends Objeto {
 	}
 	
 	public void addPonto() {
-		pontos += multiplicador;
+		pontos++;
 	}
 	public void zerarPontos() {
 		pontos = 0;
-	}
-	public void setMultiplicador(int multiplicador) {
-		this.multiplicador = multiplicador;
 	}
 	public int getPontos() {
 		return pontos;

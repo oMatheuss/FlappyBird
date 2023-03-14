@@ -5,13 +5,11 @@ import java.awt.Image;
 import java.awt.image.ImageObserver;
 
 public class Bird extends Objeto {
+	private final ImageObserver o;
+	private final ResourceManager rm;
 	
-	private static final long serialVersionUID = 5L;
-	private ImageObserver o;
-	private ResourceManager rm;
-	
-	private Image[] birdImg = new Image[4];
-	private int[] tamEPos = new int[4];
+	private final Image[] birdImg = new Image[4];
+	private final int[] tamEPos = new int[4];
 	private int frame;
 	
 	

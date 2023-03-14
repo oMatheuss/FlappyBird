@@ -6,13 +6,16 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 public class Botao {
-	private int x, y, w, h;
-	private String label;
-	private Font font;
+	private int x;
+	private int y;
+	private final int w;
+	private final int h;
+	private final String label;
+	private final Font font;
 	private boolean ativo;
 	
-	private Color cor = Color.decode("#031926");
-	private Color cor2 = Color.decode("#468189");
+	private final Color cor = Color.decode("#031926");
+	private final Color cor2 = Color.decode("#468189");
 	
 	public Botao(Graphics2D g2d, String label, Font font, int fontSize) {
 		ativo = false;
@@ -47,21 +50,12 @@ public class Botao {
 	}
 	
 	public boolean contemCoord(Point p) {
-		if (p.x > x && p.y > y-h && p.x < x+w && p.y < y)
-			return true;
-		else
-			return false;
+		return p.x > x && p.y > y - h && p.x < x + w && p.y < y;
 	}
 	public void setLocationAsCenter() {
 		x -= w/2;
 	}
 	public int getWidth() {
 		return w;
-	}
-	public int getHeight() {
-		return h;
-	}
-	public Point getLocation() {
-		return new Point(x, y);
 	}
 }
