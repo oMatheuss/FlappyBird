@@ -6,6 +6,7 @@ import javax.sound.sampled.AudioSystem;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -43,7 +44,7 @@ public class ResourceManager {
 	
 	public void setSprite(String fileName, String name){
 		URL resource = ClassLoader.getSystemResource("resources/sprites/" + fileName);
-		try(BufferedInputStream is = (BufferedInputStream) resource.openStream()) {
+		try(InputStream is = resource.openStream()) {
 			resources.put(name, ImageIO.read(is));
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -52,7 +53,7 @@ public class ResourceManager {
 	
 	public void setTrueTypeFont(String fileName, String name) {
 		URL resource = ClassLoader.getSystemResource("resources/fonts/" + fileName);
-		try(BufferedInputStream is = (BufferedInputStream) resource.openStream()) {
+		try(InputStream is = resource.openStream()) {
 			resources.put(name, Font.createFont(Font.TRUETYPE_FONT, is));
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -62,7 +63,7 @@ public class ResourceManager {
 	public void setSound(String fileName, String name) {
 		URL resource = ClassLoader.getSystemResource("resources/sfx/" + fileName);
 		try {
-			BufferedInputStream is = (BufferedInputStream) resource.openStream();
+			InputStream is = new BufferedInputStream(resource.openStream());
 			resources.put(name, AudioSystem.getAudioInputStream(is));
 		} catch (Exception ex) {
 			ex.printStackTrace();

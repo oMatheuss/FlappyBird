@@ -1,17 +1,10 @@
 package principal;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-
 import principal.Game.Dificuldade;
-import principal.UI.MenuDificuldades;
-import principal.UI.MenuInicial;
-import principal.UI.MenuPausa;
-import principal.UI.MenuSobre;
-import principal.UI.MenuVolume;
+import principal.UI.*;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class WindowController extends JFrame {
 	private final Game fb;

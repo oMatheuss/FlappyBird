@@ -1,10 +1,7 @@
 package principal;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -32,38 +29,15 @@ public class AudioManager {
 		try {
 			for (int i = 0; i < 5; i++) {
 				clip[i] = AudioSystem.getClip();
-				byte[] audio = audioToByteArray(sound[i]);
-				AudioFormat format = sound[i].getFormat();
-				clip[i].open(format, audio, 0, audio.length);
+				clip[i].open(sound[i]);
 			}
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
-	
-	public byte[] audioToByteArray(AudioInputStream audio) {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		BufferedInputStream in = new BufferedInputStream(audio);
-		
-		int read;
-		byte[] buff = new byte[512];
-		try {
-			while ((read = in.read(buff)) > 0)
-			{
-			    out.write(buff, 0, read);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return out.toByteArray();
-	}
-	
+
 	public void volume(float v) {
 		if (v < 0f || v > 1f) {
 			System.out.println("Volume out of range!");
